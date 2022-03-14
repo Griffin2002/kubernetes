@@ -49,3 +49,16 @@ resource "rke_cluster" "test-cluster" {
     ssh_key = file("~/.ssh/id_rsa")
   }
 }
+provider "rke" {
+  log_file = "rke_debug.log"
+}
+provider "aws" {
+  region                 = "us-east-1"
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  iam_instance_profile   = aws_iam_instance_profile.default.name
+}
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
